@@ -34,7 +34,7 @@ class Converter:
         self.temp_entry.grid(row=2, padx=10, pady=10)
 
         error = "Please enter a number"
-        self.temp_error = Label(self.temp_frame, text=error,
+        self.temp_error = Label(self.temp_frame, text="",
                                 fg="#9C0000")
         self.temp_error.grid(row=3)
 
@@ -59,24 +59,27 @@ class Converter:
         self.to_history_button.grid(row=1, column=1, padx=5, pady=5)
 
 
-    def check_temp(min_value):
+    def check_temp(self, min_value):
         error = "Please enter a number that is more than {}".format(min_value)
 
         try:
-            response = float(input("Choose a number: "))
+            response = self.temp_entry.get()
+            response = float(response)
 
             if response < min_value:
-                print(error)
+                self.temp_error.config(text=error)
             
             else:
                 return response
 
         except ValueError:
-            print(error)
+            self.temp_error.config(text=error)
+
 
     def to_celcius(self):
 
         self.check_temp(-459)
+
 
 # main routine
 if __name__ == "__main__":
