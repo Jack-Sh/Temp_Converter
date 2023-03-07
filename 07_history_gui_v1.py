@@ -1,5 +1,7 @@
 from tkinter import *
 from functools import partial # to prevent unwanted windows
+from datetime import date 
+import re 
 
 
 class Converter:
@@ -44,6 +46,9 @@ class HistoryExport:
         max_calcs = 5
         self.var_max_calcs = IntVar()
         self.var_max_calcs.set(max_calcs)
+
+        # set filename variable
+        self.var_filename = StringVar()
 
         # Function converts contents of calc list into string
         calc_string_text = self.get_calc_string(calc_list)
@@ -108,7 +113,7 @@ class HistoryExport:
         self.button_frame = Frame(self.history_frame)
         self.button_frame.grid(row=6)
 
-        self.export_button = Button(self.button_frame, font=("Arial", "12", "bold"), text="Export", bg="#004C99", fg="#FFFFFF", width=12)
+        self.export_button = Button(self.button_frame, font=("Arial", "12", "bold"), text="Export", bg="#004C99", fg="#FFFFFF", width=12, command=self.make_file)
 
         self.export_button.grid(row=0, column=0, padx=10, pady=10)
 
@@ -145,6 +150,31 @@ class HistoryExport:
         calc_string += var_calculations[-max_calcs]
 
         return calc_string
+
+
+    def make_file(self):
+
+        #retrieve filename
+        filename = self.filename_entry.get()
+
+        if filename == "":
+            # get date and create default filename
+            date_part = self.get_date() 
+
+        else:
+            # check that filename is valid
+            pass
+
+    
+    # retrieves date and creates YYYY_MM_DD string
+    def get_date(self):
+        today = date.today()
+
+        day = today.strftime("%d")
+        month = today.strftime("%m")
+        year = today.strftime("%Y")
+
+        return "{}_{}_{}".format(year, month, day)
 
 
     # closes help dialogue (used by button and x at top of dialogue)
