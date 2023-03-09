@@ -106,9 +106,9 @@ class HistoryExport:
 
         self.filename_entry.grid(row=4, padx=10, pady=10)
 
-        self.filename_error_label = Label(self.history_frame, text="Filename error goes here", fg="#9C0000", font=("Arial", "12", "bold"))
+        self.filename_feedback = Label(self.history_frame, text="", fg="#9C0000", wraplength=300, font=("Arial", "12", "bold"))
 
-        self.filename_error_label.grid(row=5)
+        self.filename_feedback.grid(row=5)
 
         self.button_frame = Frame(self.history_frame)
         self.button_frame.grid(row=6)
@@ -157,13 +157,23 @@ class HistoryExport:
         #retrieve filename
         filename = self.filename_entry.get()
 
+        filename_ok = ""
+
         if filename == "":
             # get date and create default filename
             date_part = self.get_date() 
+            filename = "{}_temperature_calculations".format(date_part)
 
         else:
             # check that filename is valid
-            pass
+            filename_ok = self.check_filename(filename)
+
+        if filename_ok == "":
+            filename += ".txt"
+            self.filename_feedback.config(text="You are OK")
+
+        else:
+            self.filename_feedback.config(text=filename_ok)
 
     
     # retrieves date and creates YYYY_MM_DD string
@@ -175,6 +185,31 @@ class HistoryExport:
         year = today.strftime("%Y")
 
         return "{}_{}_{}".format(year, month, day)
+
+
+    @staticmethod
+    def check_filename(filename):
+        problem = ""
+
+        # regular expression to check filename is valid
+        valid_char = "[A-Za-z0-9_]"
+
+        # iterates through filename and checks each letter
+        for letter in filename:
+            if re.match(valid_char, letter):
+                continue 
+        
+            elif letter == " ":
+                problem = "Sorry, no spaces allowed"
+            
+            else:
+                problem = ("Sorry, no {}'s allowed".format(letter))
+            break
+
+        if problem != "":
+            problem = "{}. Use letters / numbers / underscores only".format(problem)
+
+        return problem
 
 
     # closes help dialogue (used by button and x at top of dialogue)
