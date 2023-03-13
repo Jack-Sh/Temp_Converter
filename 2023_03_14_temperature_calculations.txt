@@ -1,0 +1,11 @@
+**** Temperature Calculations ****
+
+Generated: 14/03/2023
+
+Here is your calculation history (oldest to newest)...
+
+-273 C° is -459 F°
+-273 F° is -169 C°
+5 F° is -15 C°
+5 C° is 41 F°
+
